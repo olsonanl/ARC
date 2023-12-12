@@ -13,7 +13,7 @@ from langchain.schema import StrOutputParser
 
 
 import os
-os.environ['OPENAI_API_KEY'] = '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'
+os.environ['OPENAI_API_KEY'] = 'xxxxxxxx'
 
 # cleanup previous
 # vectorstore.delete_collection()
