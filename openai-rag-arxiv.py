@@ -13,7 +13,8 @@ from langchain.schema import StrOutputParser
 
 
 import os
-os.environ['OPENAI_API_KEY'] = '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'
+import getpass
+os.environ['OPENAI_API_KEY'] = getpass.getpass("Enter your openai api key: ")
 
 # cleanup previous
 # vectorstore.delete_collection()
