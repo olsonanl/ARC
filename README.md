@@ -40,3 +40,6 @@ This is from the collab notebook
 !pip install -U langchain openai chromadb langchainhub bs4 tiktoken kaleido python-multipart cohere arxiv pymupdf
 
 
+## For the example agent
+    pip install tavily-python
+    
