@@ -41,5 +41,7 @@ This is from the collab notebook
 
 
 ## For the example agent
-    pip install tavily-python
+    pip install tavily-python # This turned out to be a dead end.
+    pip install pyvespa # This also turned out to be a dead end.
+    # I decided to use an arxiv retreiver.
     
