@@ -3,15 +3,13 @@ from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
 import requests
 import json
-from datetime import datetime
-
 
 
 # A helper function to call from invoke. Sends the HTTP
 # query to the ARGO model
 
 
-def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7) -> str:  
+def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, model='gpt35') -> str:  
         
     if url is None:
         url = "https://apps-dev.inside.anl.gov/argoapi/api/v1/resource/chat/"
@@ -20,8 +18,9 @@ def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7) -> s
     }
     data = {
             "user": "mtdapi",
-            "model": "gpt35",
-            "system": "You are a helpful operations assistant AI named Argo. You specialize in supporting the personnel, scientists, and facility users at Argonne National Laboratory.",
+            "model": model,
+            "system": "You are a helpful operations assistant AI named Argo. You specialize in supporting \
+                       the personnel, scientists, and facility users at Argonne National Laboratory.",
             "prompt": [prompt],
             "stop": [],
             "temperature": temperature,
@@ -46,7 +45,8 @@ def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7) -> s
 
 class ARGO_LLM(LLM):
 
-    n: int
+    n: int = 1
+    
     @property
     def _llm_type(self) -> str:
         return "custom"
