@@ -9,7 +9,7 @@ import json
 # query to the ARGO model
 
 
-def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, model='gpt35') -> str:  
+def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, model='gpt35', user="") -> str:  
         
     if url is None:
         url = "https://apps-dev.inside.anl.gov/argoapi/api/v1/resource/chat/"
@@ -17,7 +17,7 @@ def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, mode
         "Content-Type": "application/json"
     }
     data = {
-            "user": "mtdapi",
+            "user": user,
             "model": model,
             "system": "You are a helpful operations assistant AI named Argo. You specialize in supporting \
                        the personnel, scientists, and facility users at Argonne National Laboratory.",
