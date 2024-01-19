@@ -29,7 +29,7 @@ class ARGO_LLM(LLM):
             raise ValueError("stop kwargs are not permitted.")
 
         response = self.argo.invoke(prompt)       
-        print(response)
+        # print(response)
         return response['response']
 
     @property
