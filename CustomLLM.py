@@ -3,40 +3,7 @@ from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
 import requests
 import json
-
-
-# A helper function to call from invoke. Sends the HTTP
-# query to the ARGO model
-
-
-def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, model='gpt35', user="") -> str:  
-        
-    if url is None:
-        url = "https://apps-dev.inside.anl.gov/argoapi/api/v1/resource/chat/"
-    headers = {
-        "Content-Type": "application/json"
-    }
-    data = {
-            "user": user,
-            "model": model,
-            "system": "You are a helpful operations assistant AI named Argo. You specialize in supporting \
-                       the personnel, scientists, and facility users at Argonne National Laboratory.",
-            "prompt": [prompt],
-            "stop": [],
-            "temperature": temperature,
-            "top_p": top_p
-    }
-        
-    data_json = json.dumps(data)    
-    response = requests.post(url, headers=headers, data=data_json)
-
-    if response.status_code == 200:
-        print(response.json())
-    else:
-        print(f"Request failed with status code: {response.status_code}")
-        print(response.text)
-    
-    return response.text
+from ARGO import ArgoWrapper
 
 
 # The ARGO_LLM class. Uses the _invoke_model helper function.
@@ -45,8 +12,8 @@ def _invoke_model(prompt: str, url: str = None, temperature=0.8, top_p=0.7, mode
 
 class ARGO_LLM(LLM):
 
-    n: int = 1
-    
+    argo: ArgoWrapper
+
     @property
     def _llm_type(self) -> str:
         return "custom"
@@ -61,13 +28,14 @@ class ARGO_LLM(LLM):
         if stop is not None:
             raise ValueError("stop kwargs are not permitted.")
 
-        response = _invoke_model("What are some common flaviviruses?")        
-        return response
+        response = self.argo.invoke(prompt)       
+        print(response)
+        return response['response']
 
     @property
     def _identifying_params(self) -> Mapping[str, Any]:
         """Get the identifying parameters."""
-        return {"n": self.n}
+        return {}
 
     @property
     def _generations(self):
