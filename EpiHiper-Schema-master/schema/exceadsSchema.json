@@ -1,0 +1,14 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EXCEADS Schema",
+  "$id": "exceadsSchema", 
+  "description": "Description of the schema",
+  "type": "object",
+  "properties": {
+    "editable": {"type": "boolean"},
+    "defaultValue": {"$ref": "./typeRegistry.json#/definitions/nonNegativeNumber"},
+    "minValue": {"$ref": "./typeRegistry.json#/definitions/nonNegativeNumber"},
+    "maxValue": {"$ref": "./typeRegistry.json#/definitions/nonNegativeNumber"},
+    "calibrate": {"type": "boolean"}
+  }
+}]

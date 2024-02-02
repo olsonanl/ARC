@@ -1,0 +1,38 @@
+[{
+  "$schema": "./jsontronRulesSchema.json",
+  "schema": {
+    "title": "Initialization Rules",
+    "id": "InitializationRules",
+    "schemaVersion": "1.0",
+    "queryBinding": "jsonpath",
+    "defaultPhase": "default",
+    "phase": [
+      {
+        "id": "default",
+        "active": [
+          "UniqueIdCheck"
+        ]
+      }
+    ],
+    "pattern": [
+      {
+        "id": "UniqueIdCheck",
+        "title": "Unique Id Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "UniqueIdCheck_R1",
+            "context": "$",
+            "assert": [
+              {
+                "id": "UniqueIdCheck_R1_A1",
+                "test": "jp.query(contextNode, '$..sets.*.id').length == new Set(jp.query(contextNode, '$..sets.*.id')).size",
+                "message": "Global: The id of a set must be unique."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}]

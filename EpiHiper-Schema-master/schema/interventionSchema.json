@@ -1,0 +1,23 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Intervention File",
+  "$id": "#interventionFile",
+  "description": "A schema describing the contents of an intervention file for EpiHiper",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "triggers",
+    "interventions"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/interventionSchema.json$"
+    },
+    "sets": {"$ref": "./typeRegistry.json#/definitions/sets"},
+    "variables": {"$ref": "./typeRegistry.json#/definitions/variables"},
+    "traits": {"$ref": "./typeRegistry.json#/definitions/traits"},
+    "triggers": {"$ref": "./typeRegistry.json#/definitions/triggers"},
+    "interventions": {"$ref": "./typeRegistry.json#/definitions/interventions"}
+  }
+}]

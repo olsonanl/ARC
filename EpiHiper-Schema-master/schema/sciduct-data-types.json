@@ -1,0 +1,14 @@
+[{
+  "exceads_intervention_template": {
+    "format": "json",
+    "schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json"
+  },
+    "exceads_trigger_template": {
+    "format": "json",
+    "schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json"
+  },
+  "exceads_initialization_template": {
+    "format": "json",
+    "schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json"
+  }
+}]

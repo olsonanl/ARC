@@ -1,0 +1,21 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Initialization File",
+  "$id": "#initializationFile",
+  "description": "A schema describing the contents of an initialization file for EpiHiper",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "initializations"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/initializationSchema.json$"
+    },
+    "variables": {"$ref": "./typeRegistry.json#/definitions/variables"},
+    "sets": {"$ref": "./typeRegistry.json#/definitions/sets"},
+    "traits": {"$ref": "./typeRegistry.json#/definitions/traits"},
+    "initializations": {"$ref": "./typeRegistry.json#/definitions/initializations"}
+  }
+}]

@@ -1,0 +1,152 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Network",
+  "$$target": [
+    "./networkSchema.json"
+  ],
+  "description": "Schema describing the network encoding and properties.",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "encoding",
+    "numberOfNodes",
+    "numberOfEdges",
+    "sizeofPID",
+    "activityEncoding",
+    "sizeofActivity",
+    "edgeTraitEncoding",
+    "sizeofEdgeTrait",
+    "accumulationTime",
+    "timeResolution",
+    "hasActiveField",
+    "hasWeightField"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/networkSchema.json$"
+    },
+    "encoding": {
+      "description": "Encoding used for the network edges",
+      "type": "string",
+      "enum": [
+        "binary",
+        "text"
+      ]
+    },
+    "numberOfNodes": {
+      "description": "The number of nodes in the network",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "numberOfEdges": {
+      "description": "The number of edges in the network",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "sizeofPID": {
+      "description": "The size of the person Id (PID) in bytes",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "accumulationTime": {
+      "description": "An annotaion string describing the accumulation time for the contact",
+      "type": "string"
+    },
+    "timeResolution": {
+      "description": "The maximal value of the duration field, i.e., the value to divide the duration by to get it relative to the accumulation time",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeNumber"
+    },
+    "hasLocationIDField": {
+      "description": "Boolean indicating whether the network contains a Location ID (LID) for each edge (Default: false).",
+      "type": "boolean"
+    },
+    "hasActiveField": {
+      "description": "Boolean indicating whether the network contains an active flag for each edge",
+      "type": "boolean"
+    },
+    "hasWeightField": {
+      "description": "Boolean indicating whether the network contains a weight for each edge",
+      "type": "boolean"
+    },
+    "activityEncoding": {
+      "description": "The features and their valid values encoded in the target and source activities",
+      "allOf": [
+        {
+          "$ref": "./typeRegistry.json#/definitions/trait"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "enum": [
+                "activityTrait"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "sizeofActivity": {
+      "description": "The size of the target and source activities in bytes",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "edgeTraitEncoding": {
+      "description": "The features and their valid values encoded in the edge trait",
+      "allOf": [
+        {
+          "$ref": "./typeRegistry.json#/definitions/trait"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "enum": [
+                "edgeTrait"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "sizeofEdgeTrait": {
+      "description": "The size of the edge trait in bytes",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "partition": {
+      "type": "object",
+      "required": [
+        "numberOfNodes",
+        "numberOfEdges",
+        "numberOfParts",
+        "firstLocalNode",
+        "beyondLocalNode"
+      ],
+      "properties": {
+        "numberOfNodes": {
+          "description": "The number of nodes in the network",
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        },
+        "numberOfEdges": {
+          "description": "The number of edges in the network",
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        },
+        "numberOfParts": {
+          "description": "The number of partitions of the network",
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        },
+        "firstLocalNode": {
+          "description": "The number of the first local node",
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        },
+        "beyondLocalNode": {
+          "description": "The number of the first node beyond the local nodes",
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        }
+      }
+    },
+    "sourceOnlyNodes": {
+      "type": "array",
+      "items": {
+        "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+      }
+    }
+  }
+}]

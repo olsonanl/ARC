@@ -1,0 +1,215 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpiHiper run parameters",
+  "description": "A schema describing the run parameters for EpiHiper",
+  "definitions": {},
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "modelScenario",
+    "startTick",
+    "endTick"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/runParametersSchema.json$"
+    },
+    "modelScenario": {
+      "description": "Filename of the disease model in a json file.",
+      "allOf": [
+        {
+          "$ref": "./typeRegistry.json#/definitions/localPath"
+        },
+        {
+          "$ref": "./typeRegistry.json#/definitions/jsonFormat"
+        }
+      ]
+    },
+    "startTick": {
+      "description": "The start tick for the simulation run",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 1.0
+    },
+    "endTick": {
+      "description": "The start tick for the simulation run",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 1.0
+    },
+    "output": {
+      "description": "Path + name of the output file (default: $(pwd)/output.csv).",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "summaryOutput": {
+      "description": "Path + name of the summary output file(default: $(pwd)/summaryOutput.csv)",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "status": {
+      "description": "Path + name of the output SciDuct status file (default: $(pwd)/sciduct.status.json)",
+      "allOf": [
+        {
+          "$ref": "./typeRegistry.json#/definitions/localPath"
+        },
+        {
+          "$ref": "./typeRegistry.json#/definitions/jsonFormat"
+        }
+      ]
+    },
+    "seed": {
+      "description": "The seed for the random number generator (default: auto generated)",
+      "oneOf": [
+        {
+          "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "random"
+          ]
+        }
+      ]
+    },
+    "reseed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "tick"
+        ],
+        "properties": {
+          "tick": {
+            "description": "The tick at which the seed should be changed",
+            "type": "integer"
+          },
+          "seed": {
+            "description": "The seed for the random number generator (default: auto generated)",
+            "oneOf": [
+              {
+                "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "random"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "replicate": {
+      "description": "The number of the replicate created with the job",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "partitionEdgeLimit": {
+      "description": "The maximum number of network edges which are partitioned on the fly (default: 100,000,000).",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "logLevel": {
+      "description": "The logging level (default: warn)",
+      "type": "string",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "critical",
+        "off"
+      ]
+    },
+    "dbName": {
+      "description": "The name of the data base (default: epihiper_db)",
+      "type": "string"
+    },
+    "dbHost": {
+      "description": "The host of the database (including optional port) (default: localhost:5432)",
+      "type": "string"
+    },
+    "dbUser": {
+      "description": "Read only database user (default: epihiper)",
+      "type": "string"
+    },
+    "dbPassword": {
+      "description": "The password of the DB user (default: empty)",
+      "type": "string"
+    },
+    "dbMaxRecords": {
+      "description": "The maximal number of records returned by a single query (default: 100,000; 0: unlimited)",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "dbConnectionTimeout": {
+      "description": "The maximal number of second to wait for a connection (default: 2)",
+      "type": "number",
+      "multipleOf": 1,
+      "minimum": 2
+    },
+    "dbConnectionRetries": {
+      "description": "The maximal number of retries for a connection (default: 15)",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "dbConnectionMaxDelay": {
+      "description": "The maximal delay in milliseconds for attempting a connection (default: 500)",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "dumpActiveNetwork": {
+      "type": "object",
+      "description": "If present causes regular dumps of the active network",
+      "required": [
+        "output",
+        "threshold"
+      ],
+      "properties": {
+        "output": {
+          "description": "Path + name of the output file",
+          "$ref": "./typeRegistry.json#/definitions/localPath"
+        },
+        "threshold": {
+          "description": "The threshold for the weight for which active edges are dumped.",
+          "type": "number",
+          "minimum": 0
+        },
+        "startTick": {
+          "description": "The start tick for the simulation run (default: startTick of simulation).",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 1.0
+        },
+        "endTick": {
+          "description": "The end tick for the simulation run (default: endTick of simulation).",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 1.0
+        },
+        "tickIncrement": {
+          "description": "The number of ticks between network dumps (default: 1).",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 1.0
+        },
+        "encoding": {
+          "description": "The format of the network file (default: text).",
+          "enum": [
+            "text",
+            "binary"
+          ]
+        }
+      }
+    },
+    "pluginTransmissionPropensity": {
+      "description": "Path + name of dynamic library providing the function for calculating the transmission propensity.",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "pluginNextProgression": {
+      "description": "Path + name of dynamic library providing the function for calculating the next progression.",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "pluginDwellTime": {
+      "description": "Path + name of dynamic library providing the function for calculating the dwell time.",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    }
+  }
+}]

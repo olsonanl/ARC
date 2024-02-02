@@ -1,0 +1,17 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Traits",
+  "description": "A schema for a list of traits containing enumerable features.",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "traits"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/traitsSchema.json$"
+    },
+    "traits": {"$ref": "./typeRegistry.json#/definitions/traits"}
+  }
+}]

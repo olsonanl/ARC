@@ -1,0 +1,40 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpiHiper Split Parameters",
+  "description": "A schema describing the run parameters for EpiHiper",
+  "definitions": {},
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "contactNetwork",
+    "numberOfParts"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/partitionSchema.json$"
+    },
+    "contactNetwork": {
+      "description": "Filename of the contact network",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "numberOfParts": {
+      "description": "The number of parts to create.",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 1.0
+    },
+    "outputDirectory": {
+      "description": "Output Directory for the created parts",
+      "default": "/output",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "status": {
+      "description": "Path + name of the output SciDuct status file",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    }
+  }
+}]

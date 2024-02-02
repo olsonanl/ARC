@@ -1,0 +1,58 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Job Status",
+  "description": "EpiHiper Job Status Report",
+  "definitions": {
+    "jobStatus": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "The unique Id of the job.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The job name",
+          "type": "string"
+        },
+        "progress": {
+          "description": "The progress of the job in percent",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "status": {
+          "description": "The status of the job",
+          "type": "string",
+          "enum": [
+            "running",
+            "completed",
+            "failed"
+          ]
+        },
+        "statusDetail": {
+          "description": "A human readable description of the current state of the job.",
+          "type": "string"
+        },
+        "subprocesses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/jobStatus"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {"$ref": "#/definitions/jobStatus"},
+    {
+      "required": [
+        "name",
+        "progress",
+        "status"
+      ]
+    }
+  ]
+}]

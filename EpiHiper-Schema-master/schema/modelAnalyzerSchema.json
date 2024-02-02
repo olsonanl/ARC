@@ -1,0 +1,63 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Model Analyzer Configuration",
+  "description": "The configuration file for the model analyzer",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "diseaseModel"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/modelAnalyzerSchema.json$"
+    },
+    "diseaseModel": {
+      "description": "Filename of the disease model in a json file.",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "output": {
+      "description": "Path + name of the output file",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "status": {
+      "description": "Path + name of the output SciDuct status file",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "seed": {
+      "description": "The seed for the random number generator (default: random seeding)",
+      "$ref": "./typeRegistry.json#/definitions/nonNegativeInteger"
+    },
+    "sampleSize": {
+      "description": "The number of samples taken for each exit state of a transmission (default: 100,000)",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 1.0
+    },
+    "maxTick": {
+      "description": "The maximum tick considered when analyzing the model (default: 100)",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 1.0
+    },
+    "logLevel": {
+      "description": "The logging level (default warn)",
+      "type": "string",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "critical",
+        "off"
+      ]
+    }
+  }
+}]

@@ -1,0 +1,67 @@
+[{
+  "$schema": "./jsontronRulesSchema.json",
+  "schema": {
+    "title": "Intervention Rules",
+    "id": "Intervention Rules",
+    "schemaVersion": "1.0",
+    "queryBinding": "jsonpath",
+    "defaultPhase": "default",
+    "phase": [
+      {
+        "id": "default",
+        "active": [
+          "UniqueIdCheck",
+          "InterventionReferenceCheck"
+        ]
+      }
+    ],
+    "pattern": [
+      {
+        "id": "UniqueIdCheck",
+        "title": "Unique Id Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "UniqueIdCheck_R1",
+            "context": "$",
+            "assert": [
+              {
+                "id": "UniqueIdCheck_R1_A1",
+                "test": "jp.query(contextNode, '$..sets.*.id').length == new Set(jp.query(contextNode, '$..sets.*.id')).size",
+                "message": "Global: The id of a set must be unique."
+              },
+              {
+                "id": "UniqueIdCheck_R1_A2",
+                "test": "jp.query(contextNode, '$..globalVariables.*.id').length == new Set(jp.query(contextNode, '$..globalVariables.*.id')).size",
+                "message": "Global: The id of a global variable must be unique."
+              },
+              {
+                "id": "UniqueIdCheck_R1_A3",
+                "test": "jp.query(contextNode, '$..interventions.*.id').length == new Set(jp.query(contextNode, '$..interventions.*.id')).size",
+                "message": "Global: The id of an intervention must be unique."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "InterventionReferenceCheck",
+        "title": "Intervention Reference Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "InterventionReferenceCheck_R1",
+            "context": "$..triggers.*.interventionIds.*",
+            "assert": [
+              {
+                "id": "InterventionReferenceCheck_R1_A1",
+                "test": "jp.query(documentRoot, '$..interventions.*.id').includes(contextNode[0])",
+                "message": "'Trigger interventionId: The intervention id ' + contextNode[0] + ' is not defined.'"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}]

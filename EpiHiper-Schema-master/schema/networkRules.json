@@ -1,0 +1,68 @@
+[{
+  "$schema": "./jsontronRulesSchema.json",
+  "schema": {
+    "title": "Network Rules",
+    "id": "NetworkRules",
+    "schemaVersion": "1.0",
+    "queryBinding": "jsonpath",
+    "defaultPhase": "default",
+    "phase": [
+      {
+        "id": "default",
+        "active": [
+          "UniqueIdCheck",
+          "IdReferenceCheck"
+        ]
+      }
+    ],
+    "pattern": [
+      {
+        "id": "UniqueIdCheck",
+        "title": "Unique Id Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "UniqueIdCheck_R2",
+            "context": "$..traits.*",
+            "assert": [
+              {
+                "id": "UniqueIdCheck_R2_A1",
+                "test": "jp.query(contextNode, '$..features.*.id').length == new Set(jp.query(contextNode, '$..features.*.id')).size",
+                "message": "'Trait [' + jp.query(contextNode, '$.*.id') + ']: The id of a feature must be unique.'"
+              }
+            ]
+          },
+          {
+            "id": "UniqueIdCheck_R3",
+            "context": "$..features.*",
+            "assert": [
+              {
+                "id": "UniqueIdCheck_R3_A1",
+                "test": "jp.query(contextNode, '$..enums.*.id').length == new Set(jp.query(contextNode, '$..enums.*.id')).size",
+                "message": "'Feature [' + jp.query(contextNode, '$.*.id') + ']: The id of an enum must be unique.'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "IdReferenceCheck",
+        "title": "Check whether all referenced id are defined.",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "IdReferenceCheck_R1",
+            "context": "$..features.*",
+            "assert": [
+              {
+                "id": "IdReferenceCheck_R1_A1",
+                "test": "jp.query(contextNode, '$..enums.*.id').includes(jp.query(contextNode, '$.*.default')[0])",
+                "message": "'Feature [' + jp.query(contextNode, '$.*.id') + ']: The default ' + jp.query(contextNode, '$.*.default')[0] + ' is not defined.'"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}]

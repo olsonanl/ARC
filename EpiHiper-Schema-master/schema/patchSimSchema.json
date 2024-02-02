@@ -1,0 +1,15 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PatchSim",
+  "description": "A schema for a list of PatchSim configuration.",
+  "type": "object",
+  "required": [
+    "epiHiperSchema"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/patchSimSchema.json$"
+    }
+  }
+}]

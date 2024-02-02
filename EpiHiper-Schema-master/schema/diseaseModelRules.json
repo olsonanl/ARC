@@ -1,0 +1,139 @@
+[{
+  "$schema": "./jsontronRulesSchema.json",
+  "schema": {
+    "title": "Disease Model Rules",
+    "id": "DiseaseModelRules",
+    "schemaVersion": "1.0",
+    "queryBinding": "jsonpath",
+    "defaultPhase": "default",
+    "phase": [
+      {
+        "id": "default",
+        "active": [
+          "UniqueIdCheck",
+          "InitialStateCheck",
+          "InfectionCheck",
+          "TransitionCheck",
+          "ProbabilityCheck"
+        ]
+      }
+    ],
+    "pattern": [
+      {
+        "id": "UniqueIdCheck",
+        "title": "Unique Id Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "UniqueIdCheck_R1",
+            "context": "$",
+            "assert": [
+              {
+                "id": "UniqueIdCheck_R1_A1",
+                "test": "jp.query(contextNode, '$..states.*.id').length == new Set(jp.query(contextNode, '$..states.*.id')).size",
+                "message": "Global: The id of a state must be unique."
+              },
+              {
+                "id": "UniqueIdCheck_R1_A2",
+                "test": "jp.query(contextNode, '$..transmissions.*.id').length == new Set(jp.query(contextNode, '$..transmissions.*.id')).size",
+                "message": "Global: The id of a transmission must be unique."
+              },
+              {
+                "id": "UniqueIdCheck_R1_A3",
+                "test": "jp.query(contextNode, '$..transitions.*.id').length == new Set(jp.query(contextNode, '$..transitions.*.id')).size",
+                "message": "Global: The id of a transition must be unique."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "InitialStateCheck",
+        "title": "Initial State Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "InitialStateCheck_R1",
+            "context": "$",
+            "assert": [
+              {
+                "id": "InitialStateCheck_R1_A1",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.initialState')[0])",
+                "message": "'Initial State: The state id ' + jp.query(contextNode, '$.*.initialState') + ' is not defined.'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "InfectionCheck",
+        "title": "Infection Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "InfectionCheck_R1",
+            "context": "$..transmissions.*",
+            "assert": [
+              {
+                "id": "InfectionCheck_R1_A1",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.entryState')[0])",
+                "message": "'Infection[' + jp.query(contextNode, '$.*.id') + ']: The entry state id ' + jp.query(contextNode, '$.*.entryState')[0] + ' is not defined.'"
+              },
+              {
+                "id": "InfectionCheck_R1_A2",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.exitState')[0])",
+                "message": "'Infection[' + jp.query(contextNode, '$.*.id') + ']: The exit state id ' + jp.query(contextNode, '$.*.exitState')[0] + ' is not defined.'"
+              },
+              {
+                "id": "InfectionCheck_R1_A3",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.contactState')[0])",
+                "message": "'Infection[' + jp.query(contextNode, '$.*.id') + ']: The contact state id ' + jp.query(contextNode, '$.*.contactState')[0] + ' is not defined.'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "TransitionCheck",
+        "title": "Transition Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "TransitionCheck_R1",
+            "context": "$..transitions.*",
+            "assert": [
+              {
+                "id": "TransitionCheck_R1_A1",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.entryState')[0])",
+                "message": "'Transition[' + jp.query(contextNode, '$.*.id') + ']: The entry state id ' + jp.query(contextNode, '$.*.entryState')[0] + ' is not defined.'"
+              },
+              {
+                "id": "TransitionCheck_R1_A2",
+                "test": "jp.query(documentRoot, '$..states.*.id').includes(jp.query(contextNode, '$.*.exitState')[0])",
+                "message": "'Transition[' + jp.query(contextNode, '$.*.id') + ']: The exit state id ' + jp.query(contextNode, '$.*.exitState')[0] + ' is not defined.'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ProbabilityCheck",
+        "title": "Probability Check",
+        "abstract": false,
+        "rule": [
+          {
+            "id": "ProbabilityCheck_R1",
+            "context": "$..states.*.id",
+            "assert": [
+              {
+                "id": "ProbabilityCheck_R1_A1",
+                "test": "const Q = '$..transitions[?(@.entryState == \"' + contextNode[0] + '\")].probability';const T = eval(jp.query(documentRoot, Q).join('+')); typeof T === 'undefined' || T.toPrecision(14) == 1",
+                "message": "'State[' + contextNode[0] + ']: The sum of the probability of all exit transitions must be 1.'"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}]

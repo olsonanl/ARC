@@ -1,0 +1,63 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpiHiper Model Scenario",
+  "description": "A schema describing the run parameters for EpiHiper",
+  "definitions": {},
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "contactNetwork",
+    "diseaseModel",
+    "intervention",
+    "traits"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/modelScenarioSchema.json$"
+    },
+    "contactNetwork": {
+      "description": "Filename of the contact network",
+      "$ref": "./typeRegistry.json#/definitions/localPath"
+    },
+    "diseaseModel": {
+      "description": "Filename of the disease model in a json file.",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "intervention": {
+      "description": "Filename of the interventions in a json file.",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "initialization": {
+      "description": "Filename of the initializations in a json file.",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "traits": {
+      "description": "Filename of the json file containing node and edge traits.",
+      "allOf": [
+        {"$ref": "./typeRegistry.json#/definitions/localPath"},
+        {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+      ]
+    },
+    "personTraitDB": {
+      "description": "An optional list of json files each describing a person trait database to be loaded.",
+      "type": "array",
+      "items": {
+        "description": "Filename of a person trait database description in a json file.",
+        "allOf": [
+          {"$ref": "./typeRegistry.json#/definitions/localPath"},
+          {"$ref": "./typeRegistry.json#/definitions/jsonFormat"}
+        ]
+      }
+    }
+  }
+}]

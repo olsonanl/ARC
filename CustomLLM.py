@@ -26,10 +26,11 @@ class ARGO_LLM(LLM):
         **kwargs: Any,
     ) -> str:
         if stop is not None:
-            raise ValueError("stop kwargs are not permitted.")
+            print(f"STOP={stop}")
+            # raise ValueError("stop kwargs are not permitted.")
 
         response = self.argo.invoke(prompt)       
-        # print(response)
+        print(f"ARGO Response: {response['response']}\nEND ARGO RESPONSE")
         return response['response']
 
     @property

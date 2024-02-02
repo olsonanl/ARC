@@ -1,0 +1,20 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "personTraitDatabaseDescriptionFile",
+  "title": "Person Trait Database Description File",
+  "description": "A schema for a list of traits containing enumerable features.",
+  "allOf": [
+    {
+      "type": "object",
+      "required": ["epiHiperSchema"],
+      "properties": {
+        "epiHiperSchema": {
+          "type": "string",
+          "pattern": "^.*/csvDataResourceSchema.json$"
+        },
+        "facets": {"$ref": "./typeRegistry.json#/definitions/facets"}
+      }
+    },
+    {"$ref": "./typeRegistry.json#/definitions/csvDataResource"}
+  ]
+}]

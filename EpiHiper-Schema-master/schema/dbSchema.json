@@ -1,0 +1,51 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Database Schema",
+  "$id": "#databaseSchema",
+  "description": "This is a schema which describes tables within a database",
+  "definitions": {
+    "table": {
+      "$id": "#traitFeatures",
+      "description": "A table.",
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/name"},
+            "title": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/title"},
+            "description": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/description"}
+          }
+        },
+        {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/tableSchema"}
+      ]
+    },
+    "database": {
+      "$id": "#database",
+      "description": "A database schema",
+      "type": "object",
+      "required": [
+        "name",
+        "schema"
+      ],
+      "properties": {
+        "name": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/name"},
+        "title": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/title"},
+        "description": {"$ref": "./personTraitDB/schemas/dictionary.json#/definitions/description"},
+        "schema": {
+          "type": "object",
+          "required": ["tables"],
+          "properties": {
+            "tables": {
+              "type": "array",
+              "items": {"$ref": "#/definitions/table"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$ref": "#/definitions/database"
+}]

@@ -1,0 +1,279 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Template Schema",
+  "description": "Template for a disease model",
+  "allOf": [
+    {
+      "$ref": "./typeRegistry.json#/definitions/annotation"
+    },
+    {
+      "type": "object",
+      "required": [
+        "epiHiperSchema",
+        "template",
+        "userInput",
+        "requirements",
+        "engines"
+      ],
+      "properties": {
+        "epiHiperSchema": {
+          "type": "string",
+          "pattern": "^.*/templateSchema.json$"
+        },
+        "template": {
+          "oneOf": [
+            {
+              "$ref": "./diseaseModelSchema.json"
+            },
+            {
+              "$ref": "./interventionSchema.json"
+            },
+            {
+              "$ref": "./initializationSchema.json"
+            },
+            {
+              "$ref": "./csvDataResourceSchema.json"
+            },
+            {
+              "$ref": "./patchSimSchema.json"
+            }
+          ]
+        },
+        "userInput": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "./typeRegistry.json#/definitions/annotation"
+              },
+              {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "array",
+                        "items": {
+                          "description": "A JSON pointer referencing an entity in /template",
+                          "type": "string",
+                          "pattern": "^/template/.+$"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "updates"
+                    ],
+                    "properties": {
+                      "updates": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "source",
+                            "targets"
+                          ],
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "description": "A Java Script expression to calculate the source which will be placed in the targets. Here __input__ denotes the user input"
+                            },
+                            "targets": {
+                              "type": "array",
+                              "items": {
+                                "description": "A JSON path referencing an entity or entities in /template",
+                                "$ref": "./typeRegistry.json#/definitions/jsonPath"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "validValues": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "jsonPath"
+                          ],
+                          "properties": {
+                            "jsonPath": {
+                              "$ref": "./typeRegistry.json#/definitions/jsonPath"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "interval"
+                          ],
+                          "properties": {
+                            "interval": {
+                              "type": "object",
+                              "required": [
+                                "min",
+                                "max"
+                              ],
+                              "properties": {
+                                "min": {
+                                  "type": "number"
+                                },
+                                "max": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "enum"
+                          ],
+                          "properties": {
+                            "enum": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "exceads": {
+                    "description": "Information used within EXCEADS",
+                    "$ref": "./exceadsSchema.json"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "value": {
+                    "oneOf": [
+                      {
+                        "$ref": "./typeRegistry.json#/definitions/healthState"
+                      },
+                      {
+                        "$ref": "./typeRegistry.json#/definitions/traitEnum"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "required": [
+                      "set"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "variable"
+                    ]
+                  }
+                ],
+                "properties": {
+                  "set": {
+                    "type": "object",
+                    "required": [
+                      "idRef"
+                    ],
+                    "properties": {
+                      "idRef": {
+                        "$ref": "./typeRegistry.json#/definitions/uniqueIdRef"
+                      }
+                    }
+                  },
+                  "variable": {
+                    "type": "object",
+                    "required": [
+                      "idRef"
+                    ],
+                    "properties": {
+                      "idRef": {
+                        "$ref": "./typeRegistry.json#/definitions/uniqueIdRef"
+                      }
+                    }
+                  }
+                },
+                "maxProperties": 1
+              },
+              {
+                "$ref": "./typeRegistry.json#/definitions/edgeProperty"
+              },
+              {
+                "$ref": "./typeRegistry.json#/definitions/nodeProperty"
+              },
+              {
+                "$ref": "./typeRegistry.json#/definitions/dbField"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "jsonPath",
+                  "errorMessage"
+                ],
+                "properties": {
+                  "jsonPath": {
+                    "$ref": "./typeRegistry.json#/definitions/jsonPath"
+                  },
+                  "errorMessage": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "exceads": {
+          "description": "Information used within EXCEADS",
+          "$ref": "./exceadsSchema.json"
+        },
+        "engines": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "EpiHiper",
+              "PatchSim"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}]

@@ -1,0 +1,30 @@
+[{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Merged Schema",
+  "description": "Schema for all inputs for EpiHiper",
+  "type": "object",
+  "required": [
+    "epiHiperSchema",
+    "diseaseModel",
+    "sets",
+    "globalVariables",
+    "initialization",
+    "interventions",
+    "traits",
+    "personTraitDBs"
+  ],
+  "properties": {
+    "epiHiperSchema": {
+      "type": "string",
+      "pattern": "^.*/mergedSchema.json$"
+    },
+    "diseaseModel": {"$ref": "./diseaseModelSchema.json"},
+    "sets": {"$ref": "./typeRegistry.json#/definitions/sets"},
+    "globalVariables": {"$ref": "./typeRegistry.json#/definitions/variables"},
+    "initializations": {"$ref": "./typeRegistry.json#/definitions/initializations"},
+    "interventions": {"$ref": "./typeRegistry.json#/definitions/interventions"},
+    "traits": {"$ref": "./typeRegistry.json#/definitions/traits"},
+    "personTraitDBs": {"$ref": "./typeRegistry.json#/definitions/csvDataResource"},
+    "runParameters": {"$ref": "./runParametersSchema.json"}
+  }
+}]
